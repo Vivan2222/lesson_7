@@ -10,6 +10,9 @@
 #   Воздух + Огонь = Молния
 #   Воздух + Земля = Пыль
 #   Огонь + Земля = Лава
+#   Камень + Вода = Песок
+#   Камень + Огонь = Металл
+#   Камень + земля = Нефть
 
 # Сложение элементов реализовывать через __add__
 # Если результат не определен - то возвращать None
@@ -19,91 +22,91 @@
 #   print(Water(), '+', Air(), '=', Water() + Air())
 #   print(Fire(), '+', Air(), '=', Fire() + Air())
 class Water:
-    def __init__(self):
-        self.content=' Вода '
     def __str__(self):
-        return self.content
+        return 'Вода'
     def __add__(self, other):
-        if other.content=='Воздух':
-            return Storm(part1=self, part2=Air())
-        if other.content=='Огонь':
-            return Steam(part1=self, part2=Fire())
-        if other.content=='Земля':
-            return Dirt(part1=self, part2=Land())
+        if isinstance(other, Air):
+            return Storm()
+        elif isinstance(other, Fire):
+            return Steam()
+        elif isinstance(other, Land):
+            return Dirt()
 
 class Air:
-    def __init__(self):
-        self.content='Воздух'
-
-    def __add__(self, other):
-        if other.content=='Огонь':
-            return Lighting(part1=self, part2=Fire())
-        if other.content== 'Земля':
-            return Dust(part1=self, part2=Land())
-
-
     def __str__(self):
-        return self.content
+        return 'Воздух'
+    def __add__(self, other):
+        if isinstance(other, Fire):
+            return Lighting()
+        elif isinstance(other, Land):
+            return Dust()
 
 
 class Fire:
-    def __init__(self):
-        self.content ='Огонь'
     def __str__(self):
-        return self.content
+        return 'Огонь'
     def __add__(self, other):
-        if other.content=='Земля':
-            return Ejection(part1=self, part2=Land())
-class Land:
-    def __init__(self):
-        self.content='Земля'
-    def __str__(self):
-        return self.content
+        if isinstance(other, Land):
+            return Ejection()
 
+class Land:
+    def __str__(self):
+        return 'Земля'
+
+class Stone:
+    def __str__(self):
+        return 'Камень'
+    def __add__(self, other):
+        if isinstance(other, Water):
+            return Sand()
+        elif isinstance(other, Air):
+            return Fire()
+        elif isinstance(other, Fire):
+            return Metal()
+        elif isinstance(other, Land):
+            return Oil()
+
+class Oil:
+    def __str__(self):
+        return 'Нефть'
+class Metal:
+    def __str__(self):
+        return 'Металл'
+class Sand:
+    def __str__(self):
+        return 'Песок'
 class Storm:
-    def __init__(self, part1, part2):
-        self.part1=part1
-        self.part2=part2
-        self.content = 'Шторм'
     def __str__(self):
-        return ' Я ' + self.content +' состою из ' + str(self.part1) + ' и ' + str(self.part2)
+        return 'Шторм'
 class Steam:
-    def __init__(self, part1, part2):
-        self.part1=part1
-        self.part2=part2
-        self.content='Пар'
     def __str__(self):
-        return ' Я ' + self.content + ', состою из' + str(self.part1)+ 'и ' + str(self.part2)
+        return 'Пар'
 class Dirt:
-    def __init__(self, part1, part2):
-        self.part1=part1
-        self.part2=part2
-        self.content=' Грязь'
     def __str__(self):
-        return 'Я' + self.content + ', состою из' + str(self.part1) + 'и ' + str(self.part2)
+        return 'Грязь'
 
 class Lighting:
-    def __init__(self, part1, part2):
-        self.part1=part1
-        self.part2=part2
-        self.content=' Молния'
     def __str__(self):
-        return 'Я' + self.content + ', состою из ' + str(self.part1) + ' и ' + str(self.part2)
+        return 'Молния'
 class Dust:
-    def __init__(self, part1, part2):
-        self.part1=part1
-        self.part2=part2
-        self.content='Пыль'
     def __str__(self):
-        return 'Я ' + self.content + ', состою из ' + str(self.part1) + ' и ' + str(self.part2)
+        return 'Пыль'
 
 class Ejection:
-    def __init__(self, part1, part2):
-        self.part1=part1
-        self.part2=part2
-        self.content='Лава'
+
     def __str__(self):
-        return 'Я ' + self.content + ', состою из ' + str(self.part1) + ' и ' + str(self.part2)
+        return 'Лава'
+print(Water(), '+', Air(), '=', Water() + Air())
+print(Water(), '+', Fire(), '=', Water() + Fire())
+print(Water(), '+', Land(), '=', Water() + Land())
+print(Air(), '+', Fire(), '=', Air() + Fire())
+print(Air(), '+', Land(), '=', Air() + Land())
+print(Fire(), '+', Land(), '=', Fire() + Land())
+print(Stone(), '+', Water(), '=', Stone() + Water())
+print(Stone(), '+', Air(), '=', Stone() + Air())
+print(Stone(), '+', Fire(), '=', Stone() + Fire())
+print(Stone(), '+', Land(), '=', Stone() + Land())
+
 
 
 # land= Land()
